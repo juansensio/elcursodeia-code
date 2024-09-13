@@ -1,11 +1,10 @@
 from fasthtml.common import *
 import joblib
 import pandas as pd
-import numpy as np
 
 
-model = joblib.load("my_model.pkl")
-pipeline = joblib.load("my_pipeline.pkl")
+# model = joblib.load("my_model.pkl")
+# pipeline = joblib.load("my_pipeline.pkl")
 
 app, rt = fast_app(
     pico=False,
@@ -29,6 +28,7 @@ class FormData:
 def get():
     return Div(
         Div(
+            H1("House Price Predictor 🏠"),
             Form(
                 Label("Longitude:"),
                 Input(type="number", name="longitude", placeholder="Longitude", step="any", value="-121.89"),
@@ -67,23 +67,25 @@ def get():
 @rt('/predict')
 def post(data: FormData):
     print(data)
-    data = pd.DataFrame({
-        'longitude': [data.longitude],
-        'latitude': [data.latitude],
-        'housing_median_age': [data.housing_median_age],
-        'total_rooms': [data.total_rooms],
-        'total_bedrooms': [data.total_bedrooms],
-        'population': [data.population],
-        'households': [data.households],
-        'median_income': [data.median_income],
-        'ocean_proximity': [data.ocean_proximity]
-    })
+    return data
 
-    # get prediction
-    X_test_prepared = pipeline.transform(data)
-    final_predictions = model.predict(X_test_prepared)
+    # data = pd.DataFrame({
+    #     'longitude': [data.longitude],
+    #     'latitude': [data.latitude],
+    #     'housing_median_age': [data.housing_median_age],
+    #     'total_rooms': [data.total_rooms],
+    #     'total_bedrooms': [data.total_bedrooms],
+    #     'population': [data.population],
+    #     'households': [data.households],
+    #     'median_income': [data.median_income],
+    #     'ocean_proximity': [data.ocean_proximity]
+    # })
 
-    # return prediction
-    return f"Predicted house value: ${final_predictions[0]:,.2f}"
+    # # get prediction
+    # X_test_prepared = pipeline.transform(data)
+    # final_predictions = model.predict(X_test_prepared)
+
+    # # return prediction
+    # return f"Predicted house value: ${final_predictions[0]:,.2f}"
 
 serve()

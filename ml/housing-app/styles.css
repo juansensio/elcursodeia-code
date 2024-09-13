@@ -17,6 +17,11 @@ body {
   max-width: 800px; /* Increased max-width to accommodate two columns */
 }
 
+h1 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
 form {
   display: grid;
   grid-template-columns: 1fr 1fr; /* Creates two equal-width columns */
