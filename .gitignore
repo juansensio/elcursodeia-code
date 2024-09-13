@@ -1,2 +1,4 @@
 *.csv
 *.tgz
+__pycache__
+.sesskey
