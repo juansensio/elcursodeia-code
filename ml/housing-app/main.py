@@ -3,8 +3,8 @@ import joblib
 import pandas as pd
 
 
-# model = joblib.load("my_model.pkl")
-# pipeline = joblib.load("my_pipeline.pkl")
+model = joblib.load("my_model.pkl")
+pipeline = joblib.load("my_pipeline.pkl")
 
 app, rt = fast_app(
     pico=False,
@@ -28,7 +28,7 @@ class FormData:
 def get():
     return Div(
         Div(
-            H1("House Price Predictor 🏠"),
+            H1("House price predictor 🏠"),
             Form(
                 Label("Longitude:"),
                 Input(type="number", name="longitude", placeholder="Longitude", step="any", value="-121.89"),
@@ -66,26 +66,19 @@ def get():
 
 @rt('/predict')
 def post(data: FormData):
-    print(data)
-    return data
-
-    # data = pd.DataFrame({
-    #     'longitude': [data.longitude],
-    #     'latitude': [data.latitude],
-    #     'housing_median_age': [data.housing_median_age],
-    #     'total_rooms': [data.total_rooms],
-    #     'total_bedrooms': [data.total_bedrooms],
-    #     'population': [data.population],
-    #     'households': [data.households],
-    #     'median_income': [data.median_income],
-    #     'ocean_proximity': [data.ocean_proximity]
-    # })
-
-    # # get prediction
-    # X_test_prepared = pipeline.transform(data)
-    # final_predictions = model.predict(X_test_prepared)
-
-    # # return prediction
-    # return f"Predicted house value: ${final_predictions[0]:,.2f}"
+    data = pd.DataFrame({
+        'longitude': [data.longitude],
+        'latitude': [data.latitude],
+        'housing_median_age': [data.housing_median_age],
+        'total_rooms': [data.total_rooms],
+        'total_bedrooms': [data.total_bedrooms],
+        'population': [data.population],
+        'households': [data.households],
+        'median_income': [data.median_income],
+        'ocean_proximity': [data.ocean_proximity]
+    })
+    X_test_prepared = pipeline.transform(data)
+    final_predictions = model.predict(X_test_prepared)
+    return f"Predicted house value: ${final_predictions[0]:,.2f}"
 
 serve()
