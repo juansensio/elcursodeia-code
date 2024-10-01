@@ -3,8 +3,6 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from PIL import Image
 from io import BytesIO
-
-
 import numpy as np
 import onnxruntime as ort
 
@@ -13,7 +11,6 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Load ONNX model
 ort_session = ort.InferenceSession('model.onnx')
-
 
 @app.get("/", response_class=FileResponse)
 async def read_index():
@@ -33,7 +30,3 @@ async def predict(image: UploadFile = File(...)):
     ort_outs = ort_session.run(None, ort_inputs)
     predicted_digit = np.argmax(ort_outs[0])
     return {"prediction": f"{predicted_digit}"}
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
