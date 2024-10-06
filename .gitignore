@@ -6,3 +6,4 @@ __pycache__
 *.keras
 data
 *.pth
+flowers
